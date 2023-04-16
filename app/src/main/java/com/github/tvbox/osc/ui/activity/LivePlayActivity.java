@@ -1609,12 +1609,16 @@ public class LivePlayActivity extends BaseActivity {
 
             @Override
             public void onSuccess(Response<String> response) {
-                JsonArray livesArray;
+                JSONArray livesArray;
                 LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> linkedHashMap = new LinkedHashMap<>();
                 TxtSubscribe.parse(linkedHashMap, response.body());
                 livesArray = TxtSubscribe.live2JsonArray(linkedHashMap);
 
-                ApiConfig.get().loadLives(livesArray);
+                try {
+                    ApiConfig.get().loadLives(livesArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 List<LiveChannelGroup> list = ApiConfig.get().getChannelGroupList();
                 if (list.isEmpty()) {
                     Toast.makeText(App.getInstance(), "频道列表为空", Toast.LENGTH_SHORT).show();

@@ -5,7 +5,7 @@ def static buildTime() {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc.tk'

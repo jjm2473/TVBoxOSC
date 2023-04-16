@@ -35,10 +35,13 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -734,13 +737,14 @@ public class SourceViewModel extends ViewModel {
         }
     }
 
-    private MovieSort.SortFilter getSortFilter(JsonObject obj) {
-        String key = obj.get("key").getAsString();
-        String name = obj.get("name").getAsString();
-        JsonArray kv = obj.getAsJsonArray("value");
+    private MovieSort.SortFilter getSortFilter(JSONObject obj) throws JSONException {
+        String key = obj.getString("key");
+        String name = obj.getString("name");
+        JSONArray kv = obj.getJSONArray("value");
         LinkedHashMap<String, String> values = new LinkedHashMap<>();
-        for (JsonElement ele : kv) {
-            values.put(ele.getAsJsonObject().get("n").getAsString(), ele.getAsJsonObject().get("v").getAsString());
+        for (int i=0;i<kv.length();++i) {
+            final JSONObject ele = kv.getJSONObject(i);
+            values.put(ele.getString("n"), ele.getString("v"));
         }
         MovieSort.SortFilter filter = new MovieSort.SortFilter();
         filter.key = key;
@@ -751,23 +755,25 @@ public class SourceViewModel extends ViewModel {
 
     private AbsSortXml sortJson(MutableLiveData<AbsSortXml> result, String json) {
         try {
-            JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-            AbsSortJson sortJson = new Gson().fromJson(obj, new TypeToken<AbsSortJson>() {
+            JSONObject obj = new JSONObject(json);
+            AbsSortJson sortJson = new Gson().fromJson(json, new TypeToken<AbsSortJson>() {
             }.getType());
             AbsSortXml data = sortJson.toAbsSortXml();
             try {
                 if (obj.has("filters")) {
                     LinkedHashMap<String, ArrayList<MovieSort.SortFilter>> sortFilters = new LinkedHashMap<>();
-                    JsonObject filters = obj.getAsJsonObject("filters");
-                    for (String key : filters.keySet()) {
+                    JSONObject filters = obj.getJSONObject("filters");
+                    for (Iterator<String> it = filters.keys(); it.hasNext(); ) {
+                        String key = it.next();
                         ArrayList<MovieSort.SortFilter> sortFilter = new ArrayList<>();
-                        JsonElement one = filters.get(key);
-                        if (one.isJsonObject()) {
-                            sortFilter.add(getSortFilter(one.getAsJsonObject()));
-                        } else {
-                            for (JsonElement ele : one.getAsJsonArray()) {
-                                sortFilter.add(getSortFilter(ele.getAsJsonObject()));
+                        Object one = filters.get(key);
+                        if (one instanceof JSONArray){
+                            JSONArray ary = (JSONArray)one;
+                            for (int i=0;i<ary.length();++i) {
+                                sortFilter.add(getSortFilter(ary.getJSONObject(i)));
                             }
+                        } else {
+                            sortFilter.add(getSortFilter((JSONObject)one));
                         }
                         sortFilters.put(key, sortFilter);
                     }
