@@ -19,7 +19,7 @@
 -renamesourcefileattribute SourceFile
 
 # 重新包装所有重命名的包并放在给定的单一包中
--flattenpackagehierarchy androidx.base
+# -flattenpackagehierarchy androidx.base
 
 # 将包里的类混淆成n个再重新打包到一个统一的package中  会覆盖flattenpackagehierarchy选项
 -repackageclasses androidx.base
@@ -215,7 +215,7 @@
     <methods>;
 }
 
--keep class com.github.catvod.crawler.*{*;}
+-keep class com.github.catvod.crawler.* {*;}
 
 # magnet：解决模拟器推送 磁力链接 闪退
 -keep class com.xunlei.downloadlib.** {*;}
@@ -223,4 +223,7 @@
 # quickjs引擎
 -keep class com.github.tvbox.quickjs.** {*;}
 # 支持影视的ali相关的jar
--keep class com.google.gson.**{*;}
+-keep class com.google.gson.** {*;}
+
+# cglib
+-keep class net.sf.cglib.proxy.CallbackFilter {*;}

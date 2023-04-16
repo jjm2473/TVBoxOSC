@@ -32,6 +32,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
+            android:exported="true"
             android:name=".ui.activity.HomeActivity"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
@@ -86,17 +87,23 @@
             android:name=".ui.activity.SettingActivity"
             android:screenOrientation="sensorLandscape" />
 
-        <receiver android:name=".receiver.SearchReceiver">
+        <receiver
+            android:exported="false"
+            android:name=".receiver.SearchReceiver">
             <intent-filter>
                 <action android:name="android.content.movie.search.Action" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.DetailReceiver">
+        <receiver
+            android:exported="false"
+            android:name=".receiver.DetailReceiver">
             <intent-filter>
                 <action android:name="android.content.movie.detail.Action" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.CustomWebReceiver">
+        <receiver
+            android:exported="false"
+            android:name=".receiver.CustomWebReceiver">
             <intent-filter>
                 <action android:name="android.content.movie.custom.web.Action" />
             </intent-filter>

@@ -5,12 +5,12 @@ def static buildTime() {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc.tk'
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0.".concat(buildTime())
         multiDexEnabled true
@@ -21,10 +21,12 @@ android {
             }
         }
     }
-
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
     }
+
 
     buildTypes {
         debug {
@@ -59,9 +61,6 @@ android {
     }
     dexOptions {
         javaMaxHeapSize "4g"
-        additionalParameters += '--multi-dex'
-        additionalParameters += '--set-max-idx-number=48000'
-        additionalParameters += '--minimal-main-dex'
     }
     buildFeatures {
         dataBinding = true
