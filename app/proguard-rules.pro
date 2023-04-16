@@ -142,7 +142,7 @@
 #gson
 # Gson specific classes
 -dontwarn sun.misc.**
--keep class com.google.gson.Gson { *; }
+#-keep class com.google.gson.Gson { *; }
 #-keep class com.google.gson.stream.** { *; }
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.google.gson.examples.android.model.** { <fields>; }
