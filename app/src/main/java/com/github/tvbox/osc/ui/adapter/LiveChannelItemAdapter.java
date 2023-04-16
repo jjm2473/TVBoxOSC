@@ -6,7 +6,6 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.R;
-import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.bean.LiveChannelItem;
 
 import java.util.ArrayList;
@@ -32,11 +31,8 @@ public class LiveChannelItemAdapter extends BaseQuickAdapter<LiveChannelItem, Ba
         tvChannel.setText(item.getChannelName());
         int channelIndex = item.getChannelIndex();
         if (channelIndex == selectedChannelIndex && channelIndex != focusedChannelIndex) {
-            // takagen99: Added Theme Color
-//            tvChannelNum.setTextColor(mContext.getResources().getColor(R.color.color_theme));
-//            tvChannel.setTextColor(mContext.getResources().getColor(R.color.color_theme));
-            tvChannelNum.setTextColor(((BaseActivity) mContext).getThemeColor());
-            tvChannel.setTextColor(((BaseActivity) mContext).getThemeColor());
+            tvChannelNum.setTextColor(mContext.getResources().getColor(R.color.color_theme));
+            tvChannel.setTextColor(mContext.getResources().getColor(R.color.color_theme));
         }
         else{
             tvChannelNum.setTextColor(Color.WHITE);

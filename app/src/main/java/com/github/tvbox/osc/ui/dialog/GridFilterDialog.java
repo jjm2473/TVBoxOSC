@@ -2,7 +2,6 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.TypedArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,11 +78,7 @@ public class GridFilterDialog extends BaseDialog {
                         }
                         TextView val = view.findViewById(R.id.filterValue);
                         val.getPaint().setFakeBoldText(true);
-                        // takagen99: Added Theme Color
-//                        val.setTextColor(getContext().getResources().getColor(R.color.color_theme));
-                        TypedArray a = getContext().obtainStyledAttributes(R.styleable.themeColor);
-                        int themeColor = a.getColor(R.styleable.themeColor_color_theme, 0);
-                        val.setTextColor(themeColor);
+                        val.setTextColor(getContext().getResources().getColor(R.color.color_theme));
                         pre = view;
                     } else {
                         sortData.filterSelect.remove(key);
