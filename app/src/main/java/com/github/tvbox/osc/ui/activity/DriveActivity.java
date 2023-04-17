@@ -339,7 +339,7 @@ public class DriveActivity extends BaseActivity {
     private void openFilePicker() {
         if (delMode)
             toggleDelMode();
-        ChooserDialog dialog = new ChooserDialog(mContext, R.style.FileChooserStyle);
+        ChooserDialog dialog = new ChooserDialog(mContext, com.obsez.android.lib.filechooser.R.style.FileChooserStyle);
         dialog
                 .withStringResources("选择一个文件夹", "确定", "取消")
                 .titleFollowsDir(true)
