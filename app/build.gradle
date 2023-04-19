@@ -5,7 +5,7 @@ def static buildTime() {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc.tk'
@@ -135,7 +135,7 @@ dependencies {
     implementation 'com.github.seven332:jcifs:1.3.19'
     configurations {
         all {
-            exclude group: 'xpp3', module: 'xpp3'
+            exclude group: 'xpp3', module: 'xpp3_min'
         }
     }
 }
