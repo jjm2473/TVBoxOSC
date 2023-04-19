@@ -32,6 +32,9 @@
 #
 #############################################
 
+# for debug
+-keep class com.github.tvbox.osc.** { *; }
+
 # 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
 # 因为这些子类都有可能被外部调用
 -keep public class * extends android.app.Activity
