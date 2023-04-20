@@ -352,7 +352,7 @@ public class LivePlayActivity extends BaseActivity {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             int keyCode = event.getKeyCode();
             if (keyCode == KeyEvent.KEYCODE_MENU) {
-                showSettingGroup(false);
+                showSettingGroup(tvRightSettingLayout.getVisibility() == View.INVISIBLE);
             } else if (!isListOrSettingLayoutVisible()) {
                 switch (keyCode) {
                     case KeyEvent.KEYCODE_DPAD_UP:
@@ -371,7 +371,7 @@ public class LivePlayActivity extends BaseActivity {
                         // takagen99 : To cater for newer Android w no Menu button
                         // playPreSource();
                         if (!isVOD) {
-                            showSettingGroup(false);
+                            showSettingGroup(tvRightSettingLayout.getVisibility() == View.INVISIBLE);
                         } else {
                             showChannelInfo();
                         }
@@ -386,7 +386,7 @@ public class LivePlayActivity extends BaseActivity {
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
                     case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                        showChannelList(false);
+                        showChannelList(tvLeftChannelListLayout.getVisibility() == View.INVISIBLE);
                         break;
                 }
             }
@@ -470,23 +470,21 @@ public class LivePlayActivity extends BaseActivity {
 
     //频道列表
     public void divLoadEpgR(View view) {
+        mHandler.removeCallbacks(mHideChannelListRun);
+        mHandler.postDelayed(mHideChannelListRun, 6000);
         mGroupGridView.setVisibility(View.GONE);
-        mEpgInfoGridView.setVisibility(View.VISIBLE);
         mGroupEPG.setVisibility(View.VISIBLE);
         mDivLeft.setVisibility(View.VISIBLE);
         mDivRight.setVisibility(View.GONE);
-        tvLeftChannelListLayout.setVisibility(View.INVISIBLE);
-        showChannelList(false);
     }
 
     public void divLoadEpgL(View view) {
+        mHandler.removeCallbacks(mHideChannelListRun);
+        mHandler.postDelayed(mHideChannelListRun, 6000);
         mGroupGridView.setVisibility(View.VISIBLE);
-        mEpgInfoGridView.setVisibility(View.GONE);
         mGroupEPG.setVisibility(View.GONE);
         mDivLeft.setVisibility(View.GONE);
         mDivRight.setVisibility(View.VISIBLE);
-        tvLeftChannelListLayout.setVisibility(View.INVISIBLE);
-        showChannelList(false);
     }
 
     private final Runnable mFocusCurrentChannelAndShowChannelList = new Runnable() {
@@ -1830,6 +1828,7 @@ public class LivePlayActivity extends BaseActivity {
                 if (tvLeftChannelListLayout.getVisibility() == View.VISIBLE) {
                     int groupIndex = liveChannelGroupAdapter.getSelectedGroupIndex();
                     liveChannelItemAdapter.setNewData(getLiveChannels(groupIndex));
+                    mHandler.postDelayed(mHideChannelListRun, 6000);
                 }
             }
         });
@@ -1951,8 +1950,7 @@ public class LivePlayActivity extends BaseActivity {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                if (tvLeftChannelListLayout.getVisibility() == View.VISIBLE
-                        || tvRightSettingLayout.getVisibility() == View.VISIBLE)
+                if (isListOrSettingLayoutVisible())
                     return false;
 
                 int fiveScreen = PlayerUtils.getScreenWidth(mContext, true) / 5;
@@ -1974,8 +1972,7 @@ public class LivePlayActivity extends BaseActivity {
 
             @Override
             public void onLongPress(MotionEvent e) {
-                if (tvLeftChannelListLayout.getVisibility() == View.VISIBLE
-                        || tvRightSettingLayout.getVisibility() == View.VISIBLE)
+                if (isListOrSettingLayoutVisible())
                     return;
                 showSettingGroup(true);
             }
