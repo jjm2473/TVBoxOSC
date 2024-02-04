@@ -19,7 +19,7 @@
 -renamesourcefileattribute SourceFile
 
 # 重新包装所有重命名的包并放在给定的单一包中
--flattenpackagehierarchy androidx.base
+# -flattenpackagehierarchy androidx.base
 
 # 将包里的类混淆成n个再重新打包到一个统一的package中  会覆盖flattenpackagehierarchy选项
 -repackageclasses androidx.base
@@ -31,6 +31,9 @@
 # Android开发中一些需要保留的公共部分
 #
 #############################################
+
+# for debug
+-keep class com.github.tvbox.osc.** { *; }
 
 # 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
 # 因为这些子类都有可能被外部调用
@@ -59,7 +62,12 @@
 -keep interface androidx.** { *; }
 #-keep public class * extends androidx.**
 
+-dontwarn android.content.res.XmlResourceParser
 -keep class org.xmlpull.v1.** {*;}
+
+-dontwarn org.xmlpull.mxp1.MXParser,org.xmlpull.mxp1_serializer.MXSerializer
+-keep class org.xmlpull.mxp1.MXParser {*;}
+-keep class org.xmlpull.mxp1_serializer.MXSerializer {*;}
 
 # 保留R下面的资源
 -keep class **.R$* {*;}
@@ -142,6 +150,7 @@
 #gson
 # Gson specific classes
 -dontwarn sun.misc.**
+#-keep class com.google.gson.Gson { *; }
 #-keep class com.google.gson.stream.** { *; }
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.google.gson.examples.android.model.** { <fields>; }
@@ -211,7 +220,7 @@
     <methods>;
 }
 
--keep class com.github.catvod.crawler.*{*;}
+-keep class com.github.catvod.crawler.* {*;}
 
 # magnet：解决模拟器推送 磁力链接 闪退
 -keep class com.xunlei.downloadlib.** {*;}
@@ -219,4 +228,75 @@
 # quickjs引擎
 -keep class com.github.tvbox.quickjs.** {*;}
 # 支持影视的ali相关的jar
--keep class com.google.gson.**{*;}
+-keep class com.google.gson.** {*;}
+
+# cglib
+-keep class net.sf.cglib.proxy.CallbackFilter {*;}
+
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn com.ctc.wstx.stax.WstxInputFactory
+-dontwarn com.ctc.wstx.stax.WstxOutputFactory
+-dontwarn java.awt.Color
+-dontwarn java.awt.Font
+-dontwarn java.beans.BeanInfo
+-dontwarn java.beans.IntrospectionException
+-dontwarn java.beans.Introspector
+-dontwarn java.beans.PropertyDescriptor
+-dontwarn java.beans.PropertyEditor
+-dontwarn javax.activation.ActivationDataFlavor
+-dontwarn javax.swing.plaf.FontUIResource
+-dontwarn javax.xml.bind.DatatypeConverter
+-dontwarn net.sf.cglib.proxy.Callback
+-dontwarn net.sf.cglib.proxy.CallbackFilter
+-dontwarn net.sf.cglib.proxy.Enhancer
+-dontwarn net.sf.cglib.proxy.Factory
+-dontwarn net.sf.cglib.proxy.NoOp
+-dontwarn net.sf.cglib.proxy.Proxy
+-dontwarn nu.xom.Attribute
+-dontwarn nu.xom.Builder
+-dontwarn nu.xom.Document
+-dontwarn nu.xom.Element
+-dontwarn nu.xom.Elements
+-dontwarn nu.xom.Node
+-dontwarn nu.xom.ParentNode
+-dontwarn nu.xom.ParsingException
+-dontwarn nu.xom.Text
+-dontwarn nu.xom.ValidityException
+-dontwarn org.codehaus.jettison.AbstractXMLStreamWriter
+-dontwarn org.codehaus.jettison.mapped.Configuration
+-dontwarn org.codehaus.jettison.mapped.MappedNamespaceConvention
+-dontwarn org.codehaus.jettison.mapped.MappedXMLInputFactory
+-dontwarn org.codehaus.jettison.mapped.MappedXMLOutputFactory
+-dontwarn org.dom4j.Attribute
+-dontwarn org.dom4j.Branch
+-dontwarn org.dom4j.Document
+-dontwarn org.dom4j.DocumentException
+-dontwarn org.dom4j.DocumentFactory
+-dontwarn org.dom4j.Element
+-dontwarn org.dom4j.io.OutputFormat
+-dontwarn org.dom4j.io.SAXReader
+-dontwarn org.dom4j.io.XMLWriter
+-dontwarn org.dom4j.tree.DefaultElement
+-dontwarn org.jdom.Attribute
+-dontwarn org.jdom.Content
+-dontwarn org.jdom.DefaultJDOMFactory
+-dontwarn org.jdom.Document
+-dontwarn org.jdom.Element
+-dontwarn org.jdom.JDOMException
+-dontwarn org.jdom.JDOMFactory
+-dontwarn org.jdom.Text
+-dontwarn org.jdom.input.SAXBuilder
+-dontwarn org.jdom2.Attribute
+-dontwarn org.jdom2.Content
+-dontwarn org.jdom2.DefaultJDOMFactory
+-dontwarn org.jdom2.Document
+-dontwarn org.jdom2.Element
+-dontwarn org.jdom2.JDOMException
+-dontwarn org.jdom2.JDOMFactory
+-dontwarn org.jdom2.Text
+-dontwarn org.jdom2.input.SAXBuilder
+-dontwarn org.joda.time.DateTime
+-dontwarn org.joda.time.DateTimeZone
+-dontwarn org.joda.time.format.DateTimeFormatter
+-dontwarn org.joda.time.format.ISODateTimeFormat
+-dontwarn org.kxml2.io.KXmlParser

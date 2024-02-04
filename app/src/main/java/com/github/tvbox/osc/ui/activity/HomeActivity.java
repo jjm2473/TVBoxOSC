@@ -648,7 +648,7 @@ public class HomeActivity extends BaseActivity {
         boolean activated = count > 0;
         currentView.findViewById(R.id.tvFilter).setVisibility(View.VISIBLE);
         ImageView imgView = currentView.findViewById(R.id.tvFilter);
-        imgView.setColorFilter(activated ? this.getThemeColor() : Color.WHITE);
+        imgView.setColorFilter(activated ? getResources().getColor(R.color.color_theme) : Color.WHITE);
     }
 
     private final Runnable mDataRunnable = new Runnable() {

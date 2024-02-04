@@ -9,8 +9,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
         externalNativeBuild {
             cmake {
                 abiFilters 'armeabi-v7a'
@@ -42,6 +40,7 @@ android {
             version "3.10.2"
         }*/
     }
+    namespace 'com.github.tvbox.quickjs'
 }
 
 dependencies {

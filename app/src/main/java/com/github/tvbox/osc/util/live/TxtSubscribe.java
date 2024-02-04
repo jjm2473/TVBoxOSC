@@ -1,7 +1,7 @@
 package com.github.tvbox.osc.util.live;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -62,35 +62,35 @@ public class TxtSubscribe {
         }
     }
 
-    public static JsonArray live2JsonArray(LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> linkedHashMap) {
-        JsonArray jsonarr = new JsonArray();
+    public static JSONArray live2JsonArray(LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> linkedHashMap) {
+        JSONArray jsonarr = new JSONArray();
         for (String str : linkedHashMap.keySet()) {
-            JsonArray jsonarr2 = new JsonArray();
+            JSONArray jsonarr2 = new JSONArray();
             LinkedHashMap<String, ArrayList<String>> linkedHashMap2 = linkedHashMap.get(str);
             if (!linkedHashMap2.isEmpty()) {
                 for (String str2 : linkedHashMap2.keySet()) {
                     ArrayList<String> arrayList = linkedHashMap2.get(str2);
                     if (!arrayList.isEmpty()) {
-                        JsonArray jsonarr3 = new JsonArray();
+                        JSONArray jsonarr3 = new JSONArray();
                         for (int i = 0; i < arrayList.size(); i++) {
-                            jsonarr3.add(arrayList.get(i));
+                            jsonarr3.put(arrayList.get(i));
                         }
-                        JsonObject jsonobj = new JsonObject();
+                        JSONObject jsonobj = new JSONObject();
                         try {
-                            jsonobj.addProperty("name", str2);
-                            jsonobj.add("urls", jsonarr3);
+                            jsonobj.put("name", str2);
+                            jsonobj.put("urls", jsonarr3);
                         } catch (Throwable e) {
                         }
-                        jsonarr2.add(jsonobj);
+                        jsonarr2.put(jsonobj);
                     }
                 }
-                JsonObject jsonobj2 = new JsonObject();
+                JSONObject jsonobj2 = new JSONObject();
                 try {
-                    jsonobj2.addProperty("group", str);
-                    jsonobj2.add("channels", jsonarr2);
+                    jsonobj2.put("group", str);
+                    jsonobj2.put("channels", jsonarr2);
                 } catch (Throwable e) {
                 }
-                jsonarr.add(jsonobj2);
+                jsonarr.put(jsonobj2);
             }
         }
         return jsonarr;

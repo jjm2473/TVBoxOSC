@@ -11,8 +11,9 @@ import com.github.tvbox.osc.bean.MovieSort;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.activity.HomeActivity;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,10 +136,10 @@ public class DefaultConfig {
     }
 
 
-    public static String safeJsonString(JsonObject obj, String key, String defaultVal) {
+    public static String safeJsonString(JSONObject obj, String key, String defaultVal) {
         try {
             if (obj.has(key))
-                return obj.getAsJsonPrimitive(key).getAsString().trim();
+                return obj.getString(key).trim();
             else
                 return defaultVal;
         } catch (Throwable th) {
@@ -146,10 +147,10 @@ public class DefaultConfig {
         return defaultVal;
     }
 
-    public static int safeJsonInt(JsonObject obj, String key, int defaultVal) {
+    public static int safeJsonInt(JSONObject obj, String key, int defaultVal) {
         try {
             if (obj.has(key))
-                return obj.getAsJsonPrimitive(key).getAsInt();
+                return obj.getInt(key);
             else
                 return defaultVal;
         } catch (Throwable th) {
@@ -157,19 +158,22 @@ public class DefaultConfig {
         return defaultVal;
     }
 
-    public static ArrayList<String> safeJsonStringList(JsonObject obj, String key) {
+    public static ArrayList<String> safeJsonStringList(JSONObject obj, String key) {
         ArrayList<String> result = new ArrayList<>();
         try {
             if (obj.has(key)) {
-                if (obj.get(key).isJsonObject()) {
-                    result.add(obj.get(key).getAsString());
-                } else {
-                    for (JsonElement opt : obj.getAsJsonArray(key)) {
-                        result.add(opt.getAsString());
+                Object val = obj.get(key);
+                if (val instanceof JSONArray) {
+                    JSONArray ary = (JSONArray) val;
+                    for (int i=0;i<ary.length();++i) {
+                        result.add(ary.get(i).toString());
                     }
+                } else {
+                    result.add(val.toString());
                 }
             }
         } catch (Throwable th) {
+            th.printStackTrace();
         }
         return result;
     }
