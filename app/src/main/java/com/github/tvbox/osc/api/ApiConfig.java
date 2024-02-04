@@ -505,14 +505,23 @@ public class ApiConfig {
             JSONArray rules = infoJson.getJSONArray("rules");
             for (int i=0;i<rules.length();++i) {
                 final JSONObject obj = rules.getJSONObject(i);
-                String host = obj.getString("host");
-                ArrayList<String> rule = DefaultConfig.safeJsonStringList(obj, "rule");
+                ArrayList<String> hosts = new ArrayList<>();
+                if (obj.has("hosts")) {
+                    hosts.addAll(DefaultConfig.safeJsonStringList(obj, "hosts"));
+                } else if (obj.has("host")) {
+                    hosts.add(obj.getString("host"));
+                } else {
+                    continue;
+                }
+                ArrayList<String> rule = obj.has("regex")?DefaultConfig.safeJsonStringList(obj, "regex"):DefaultConfig.safeJsonStringList(obj, "rule");
                 if (rule.size() > 0) {
-                    VideoParseRuler.addHostRule(host, rule);
+                    for (String host : hosts)
+                        VideoParseRuler.addHostRule(host, rule);
                 }
                 ArrayList<String> filter = DefaultConfig.safeJsonStringList(obj, "filter");
                 if (filter.size() > 0) {
-                    VideoParseRuler.addHostFilter(host, filter);
+                    for (String host : hosts)
+                        VideoParseRuler.addHostFilter(host, filter);
                 }
             }
         }
