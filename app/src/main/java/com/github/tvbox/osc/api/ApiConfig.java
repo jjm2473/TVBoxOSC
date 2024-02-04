@@ -501,16 +501,26 @@ public class ApiConfig {
             VideoParseRuler.clearRule();
             for (JsonElement oneHostRule : infoJson.getAsJsonArray("rules")) {
                 JsonObject obj = (JsonObject) oneHostRule;
-                String host = obj.get("host").getAsString();
-                if (obj.has("rule")) {
-                    JsonArray ruleJsonArr = obj.getAsJsonArray("rule");
+                ArrayList<String> hosts = new ArrayList<>();
+                if (obj.has("hosts")) {
+                    for (JsonElement host : obj.get("hosts").getAsJsonArray()) {
+                        hosts.add(host.getAsString());
+                    }
+                } else if (obj.has("host")) {
+                    hosts.add(obj.get("host").getAsString());
+                } else {
+                    continue;
+                }
+                if (obj.has("rule") || obj.has("regex")) {
+                    JsonArray ruleJsonArr = obj.has("regex")?obj.getAsJsonArray("regex"):obj.getAsJsonArray("rule");
                     ArrayList<String> rule = new ArrayList<>();
                     for (JsonElement one : ruleJsonArr) {
                         String oneRule = one.getAsString();
                         rule.add(oneRule);
                     }
                     if (rule.size() > 0) {
-                        VideoParseRuler.addHostRule(host, rule);
+                        for (String host : hosts)
+                            VideoParseRuler.addHostRule(host, rule);
                     }
                 }
                 if (obj.has("filter")) {
@@ -521,7 +531,8 @@ public class ApiConfig {
                         filter.add(oneFilter);
                     }
                     if (filter.size() > 0) {
-                        VideoParseRuler.addHostFilter(host, filter);
+                        for (String host : hosts)
+                            VideoParseRuler.addHostFilter(host, filter);
                     }
                 }
             }
